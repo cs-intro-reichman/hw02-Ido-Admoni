@@ -1,59 +1,76 @@
 import java.util.Random;
-
+  
 public class OneOfEachStats {
-    public static void main(String[] args) {
-        int T = Integer.parseInt(args[0]);
-        int seed = Integer.parseInt(args[1]);
-        Random generator = new Random(seed);
+	public static void main (String[] args) {
+		// Gets the two command-line arguments
+        int numFam = Integer.parseInt(args[0]); 
+        // init user input of number of iterations/families
+		int seed = Integer.parseInt(args[1]);
+		// Initailizes a random numbers generator with the given seed value
+        Random generator = new Random(seed);  
+        // init random generator using the given seed
+		
+        double totChild = 0; 
+        // sums total children of all families for averaging later on
+        int[] families = new int[5]; 
+        //collects number of families with i number of children (2 children -> families[2]++, etc)
 
-        int totalChildren = 0;
-        int twoChildren = 0;  
-        int threeChildren = 0; 
-        int fourOrMoreChildren = 0;
-
-        for (int i = 0; i < T; i++) {
-            int count = 0;
-            boolean boy = false;
-            boolean girl = false;
-
-            while (!boy || !girl) {
-                boolean isChildBoy = generator.nextDouble() < 0.5;
-                if (isChildBoy) {
-                    boy = true;
-                    System.out.print("b ");
-                } else {
-                    girl = true;
-                    System.out.print("g ");
+        for(int i=0; i<numFam; i++){ 
+        // each loop creates new family by randomises children
+    		int boy = 0;
+            int girl = 0;
+            
+            while(boy == 0 || girl ==0){ 
+            // produces children until at least 1 of each gender
+                double rnd = generator.nextDouble();
+                if(rnd >= 0.5){
+                    girl++;
                 }
-                count = count + 1;
+                else {
+                    boy++;
+                }
             }
 
-            System.out.println();
-            totalChildren += count;
+            int children = boy + girl;
+            totChild += children;
+            // add +1 to family size counter (families[])
+            if(children >= 4){
+                families[4]++;
+            }
+            else if(children == 3){
+                families[3]++;
+            }
+            else {
+                families[2]++;
+            }
+            /*System.out.println(i);
+            System.out.println(totChild);
+            */
+        }
 
-            if (boy && girl) {
-                if (count == 2) {
-                    twoChildren++;
-                } else if (count == 3) {
-                    threeChildren++;
-                } else {
-                    fourOrMoreChildren++;
-                }
+        int maxChild = -1; 
+        // init maximum number of children per family
+        int maxFam = -1; 
+        // init biggest group by children number
+        
+        for(int j=2; j<families.length; j++){ 
+        //checks which children amount has most families (max(families))
+            if(families[j] > maxChild){
+                maxFam = j;
+                maxChild = families[j];
             }
         }
 
-        double average = (double) totalChildren / T;
-        int mostCommon = 2;
-        if (threeChildren > twoChildren) {
-            mostCommon = 3;
-        } else if (fourOrMoreChildren > twoChildren && fourOrMoreChildren > threeChildren) {
-            mostCommon = 4;
+        String printEnding = ""; 
+        // handles the requirement for "4 or more" printing
+        if(maxFam == 4){
+            printEnding +=  " or more.";
         }
-
-        System.out.println("Average: " + average + " children to get at least one of each gender.");
-        System.out.println("Number of families with 2 children: " + twoChildren);
-        System.out.println("Number of families with 3 children: " + threeChildren);
-        System.out.println("Number of families with 4 or more children: " + fourOrMoreChildren);
-        System.out.println("The most common number of children is " + mostCommon);
-    }
+        else printEnding += ".";
+        System.out.println("Average: " + totChild / numFam + " children to get at least one of each gender.");
+        System.out.println("Number of families with 2 children: " + families[2]);
+        System.out.println("Number of families with 3 children: " + families[3]);
+        System.out.println("Number of families with 4 or more children: " + families[4]);
+        System.out.println("The most common number of children is " + maxFam + printEnding);    
+	}
 }
