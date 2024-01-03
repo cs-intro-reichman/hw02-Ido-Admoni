@@ -7,25 +7,22 @@ public class OneOfEachStats {
         Random generator = new Random(seed);
 
         int totalChildren = 0;
-        int experiments = 0; 
-
-        double twoChildren = 0;
-        double threeChildren = 0;
-        double fourOrMoreChildren = 0;
-        double mostCommon = 0;
+        int twoChildren = 0;  
+        int threeChildren = 0; 
+        int fourOrMoreChildren = 0;
 
         for (int i = 0; i < T; i++) {
             int count = 0;
-            boolean Boy = false;
-            boolean Girl = false;
+            boolean boy = false;
+            boolean girl = false;
 
-            while (!(Boy && Girl)) {
+            while (!(boy && girl)) {
                 boolean isChildBoy = generator.nextDouble() < 0.5;
                 if (isChildBoy) {
-                    Boy = true;
+                    boy = true;
                     System.out.print("b ");
                 } else {
-                    Girl = true;
+                    girl = true;
                     System.out.print("g ");
                 }
                 count = count + 1;
@@ -33,8 +30,7 @@ public class OneOfEachStats {
             System.out.println();
             totalChildren += count;
 
-            if (Boy && Girl) { 
-                experiments++;
+            if (boy && girl) {
                 if (count == 2) {
                     twoChildren++;
                 } else if (count == 3) {
@@ -45,13 +41,11 @@ public class OneOfEachStats {
             }
         }
 
-        double average = (double) totalChildren / (double) experiments;
-
-        if (twoChildren > threeChildren && twoChildren > fourOrMoreChildren) {
-            mostCommon = 2;
-        } else if (threeChildren > twoChildren && threeChildren > fourOrMoreChildren) {
+        double average = (double) totalChildren / T;
+        int mostCommon = 2;
+        if (threeChildren > twoChildren) {
             mostCommon = 3;
-        } else {
+        } else if (fourOrMoreChildren > twoChildren && fourOrMoreChildren > threeChildren) {
             mostCommon = 4;
         }
 
