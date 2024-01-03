@@ -17,16 +17,16 @@ public class OneOfEachStats {
             boolean girl = false;
 
             while (!boy || !girl) {
-				boolean isChildBoy = generator.nextDouble() < 0.5;
-					if (isChildBoy) {
-						boy = true;
-						System.out.print("b ");
-					} else {
-					girl = true;
-					System.out.print("g ");
-    }
-    count = count + 1;
-}
+                boolean isChildBoy = generator.nextDouble() < 0.5;
+                if (isChildBoy) {
+                    boy = true;
+                    System.out.print("b ");
+                } else {
+                    girl = true;
+                    System.out.print("g ");
+                }
+                count = count + 1;
+            }
 
             System.out.println();
             totalChildren += count;
